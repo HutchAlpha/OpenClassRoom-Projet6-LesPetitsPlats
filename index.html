@@ -9,6 +9,7 @@
 <body class="m-0 p-0 box-border">
   <header
     class="relative h-screen bg-cover bg-center flex flex-col items-center justify-center text-white"
+    style="background-image: url('img/PresentationMain.png');"
   >
     <!-- Logo -->
     <div class="absolute top-6 left-6">
@@ -17,7 +18,7 @@
 
     <!-- Contenu centré -->
     <div class="text-center px-4 max-w-3xl">
-      <h1 class="text-yellow-400 text-2xl sm:text-4xl md:text-5xl font-bold leading-tight uppercase mb-10">
+      <h1 class="text-yellow-400 text-2xl sm:text-4xl md:text-5xl font-bold police-Anton leading-tight uppercase mb-10">
         Cherchez parmi plus de 1500 recettes du quotidien,<br />
         simples et délicieuses
       </h1>
@@ -29,8 +30,8 @@
           placeholder="Rechercher une recette, un ingrédient, ..."
           class="flex-grow px-6 py-3 text-gray-800 outline-none"
         />
-        <button class="bg-black px-5 flex items-center justify-center">
-          <img src="img/recherche.svg" alt="Rechercher" class="w-5 h-5" />
+        <button class=" px-5 flex items-center justify-center">
+          <img src="img/recherche.svg" alt="Rechercher" class="w-10 h-10" />
         </button>
       </div>
     </div>
@@ -40,14 +41,58 @@
 
 
 
-<section class="article">
-<div class="hautArticle">
-    <div class="filtre">
-        
+<section class="bg-gray-200 h-screen">
+<div class="relative inline-block w-64">
+  <button
+    class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
+    id="BoutonFiltre"
+  >
+    <span>Ingrédients</span>
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+      viewBox="0 0 24 24">
+      <path d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <div id="dropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+    <div class="flex items-center px-3 py-2 border-b">
+      <input
+        type="text"
+        placeholder="Rechercher..."
+        class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
+      />
+      <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24">
+        <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
+      </svg>
     </div>
-    <div class="nbrecette"></div>
+
+    <ul class="max-h-60 overflow-y-auto text-sm">
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Jus de citron</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Glaçons</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Tomate</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Poulet</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Poivron rouge</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Thon en miettes</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Vinaigrette</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Gruyère râpé</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Oeuf</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Crème Liquide</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Crème de Coco</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Thon Rouge</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Carotte</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Coulis de tomate</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Huile d'olive</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Oeuf dur</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Pâte feuiletée</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Mourtarde de Dijon</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Sucre en poudre</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">Beurre</li>
+    </ul>
+  </div>
 </div>
 <article></article>
 </section>
 
 </html>
+    <script src="src/main.js"></script>
