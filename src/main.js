@@ -22,8 +22,33 @@ function Filtre() {
 }
 
 
+function Extraction() {
+  recipes.forEach((recipe, index) => {
+    console.log(`🍽️ Recette #${index + 1}`);
+    console.log(`📸 Image       : ${recipe.image}`);
+    console.log(`📛 Nom         : ${recipe.name}`);
+    console.log(`👥 Portions    : ${recipe.servings}`);
+    console.log(`⏱️ Temps       : ${recipe.time} min`);
+    console.log(`🧑‍🍳 Appareil   : ${recipe.appliance}`);
+    console.log(`🧰 Ustensiles  : ${recipe.ustensils.join(', ')}`);
+
+    console.log(`🧂 Ingrédients :`);
+    recipe.ingredients.forEach(ingredient => {
+      let detail = `${ingredient.ingredient}`;
+      if (ingredient.quantity !== undefined) {
+        detail += ` : ${ingredient.quantity}`;
+        if (ingredient.unit) detail += ` ${ingredient.unit}`;
+      }
+      console.log(`   - ${detail}`);
+    });
+
+    console.log(`\n📜 Description :\n${recipe.description}`);
+    console.log(`\n-----------------------------\n`);
+  });
+}
+
 function BlockRecette() {
-  let article = document.createElement("article");
+  let article = document.getElementById("Artrecette");
   article.classList.add("");
 
   //?Div Haut
@@ -62,15 +87,20 @@ function BlockRecette() {
     ListeIngredients.appendChild(li);
   }
 
+  divBas.appendChild(TitreArticle);
   divBas.appendChild(DRecette);
   divBas.appendChild(DescriptionRecette);
   divBas.appendChild(DIngredients);
-  DIngredients.appendChild(ListeIngredients);
+  divBas.appendChild(ListeIngredients);
   //!Fin Présentation Recettes
 
-  divBas.appendChild(TitreArticle);
   article.appendChild(divBas);
   //?Fin Div Bas
   return article;
 }
+
 Filtre();
+
+Extraction();
+
+BlockRecette();
