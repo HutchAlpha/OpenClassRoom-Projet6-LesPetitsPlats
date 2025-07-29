@@ -23,16 +23,19 @@ function Filtre() {
 
 
 function Extraction() {
-  recipes.forEach((recipe, index) => {
-    const article = BlockRecette(recipe);
-    document.body.appendChild(article);
-  });
+recipes.forEach(recipe => {
+  BlockRecette(recipe); 
+});
+
 }
 
 
 function BlockRecette(recipe) {
-  let article = document.createElement("article");
-  article.classList.add("recette");
+  const section = document.getElementById("recetteSection");
+
+  const article = document.createElement("article");
+  article.classList.add("w-full", "sm:w-1/2", "md:w-1/3", "bg-white", "rounded", "shadow", "p-4");
+
 
   //? Div Haut
   let divHaut = document.createElement("div");
@@ -82,6 +85,8 @@ function BlockRecette(recipe) {
   divBas.appendChild(listeIngredients);
 
   article.appendChild(divBas);
+
+  section.appendChild(article);
   //? Fin Div Bas
 
   return article;
