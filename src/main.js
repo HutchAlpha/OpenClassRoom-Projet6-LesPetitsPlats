@@ -29,68 +29,81 @@ recipes.forEach(recipe => {
 
 }
 
-
 function BlockRecette(recipe) {
   const section = document.getElementById("recetteSection");
 
   const article = document.createElement("article");
-  article.classList.add("w-full", "sm:w-1/2", "md:w-1/3", "bg-white", "rounded", "shadow", "p-4");
+  article.className =
+    " sm:w-1/2 lg:[width:30%] bg-white rounded-2xl overflow-hidden shadow-md flex flex-col";
 
+  //? === Image en haut + Badge durée
+  const topDiv = document.createElement("div");
+  topDiv.className = "relative";
 
-  //? Div Haut
-  let divHaut = document.createElement("div");
-  divHaut.classList.add("recette-haut");
-
-  let img = document.createElement("img");
+  const img = document.createElement("img");
   img.src = "JSON recipes/" + recipe.image;
-
   img.alt = recipe.name;
+  img.className = "w-full h-48 object-cover";
 
-  divHaut.appendChild(img);
-  article.appendChild(divHaut);
-  //? Fin Div Haut
+  const badge = document.createElement("div");
+  badge.textContent = recipe.time + "mn";
+  badge.className =
+    "absolute top-2 right-2 bg-yellow-300 text-xs text-black font-medium px-2 py-0.5 rounded-full";
 
-  //? Div Bas
-  let divBas = document.createElement("div");
-  divBas.classList.add("recette-bas");
+  topDiv.appendChild(img);
+  topDiv.appendChild(badge);
+  article.appendChild(topDiv);
 
-  let titre = document.createElement("h2");
-  titre.textContent = recipe.name;
+  //? === Texte et contenu bas
+  const bottomDiv = document.createElement("div");
+  bottomDiv.className = "p-5 flex flex-col gap-4";
 
-  let dRecette = document.createElement("p");
-  dRecette.textContent = "Recette";
+  // Titre de la recette
+  const title = document.createElement("h2");
+  title.className = "text-lg font-semibold text-black";
+  title.textContent = recipe.name;
 
-  let description = document.createElement("p");
+  // Bloc RECETTE
+  const recipeLabel = document.createElement("p");
+  recipeLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
+  recipeLabel.textContent = "Recette";
+
+  const description = document.createElement("p");
+  description.className = "text-sm text-gray-800 leading-relaxed";
   description.textContent = recipe.description;
 
-  let dIngredients = document.createElement("p");
-  dIngredients.textContent = "Ingrédients :";
+  // Bloc INGRÉDIENTS
+  const ingLabel = document.createElement("p");
+  ingLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
+  ingLabel.textContent = "Ingrédients";
 
-  let listeIngredients = document.createElement("ul");
+  const ingGrid = document.createElement("div");
+  ingGrid.className = "grid grid-cols-2 text-sm text-gray-800 gap-y-1";
+
   recipe.ingredients.forEach(ing => {
-    let li = document.createElement("li");
-    let detail = `${ing.ingredient}`;
-    if (ing.quantity !== undefined) {
-      detail += ` : ${ing.quantity}`;
-      if (ing.unit) detail += ` ${ing.unit}`;
-    }
-    li.textContent = detail;
-    listeIngredients.appendChild(li);
+    const col1 = document.createElement("div");
+    col1.textContent = ing.ingredient;
+
+    const col2 = document.createElement("div");
+    let quantity = "";
+    if (ing.quantity !== undefined) quantity += ing.quantity;
+    if (ing.unit) quantity += " " + ing.unit;
+    col2.textContent = quantity;
+
+    ingGrid.appendChild(col1);
+    ingGrid.appendChild(col2);
   });
 
-  divBas.appendChild(titre);
-  divBas.appendChild(dRecette);
-  divBas.appendChild(description);
-  divBas.appendChild(dIngredients);
-  divBas.appendChild(listeIngredients);
+  bottomDiv.appendChild(title);
+  bottomDiv.appendChild(recipeLabel);
+  bottomDiv.appendChild(description);
+  bottomDiv.appendChild(ingLabel);
+  bottomDiv.appendChild(ingGrid);
 
-  article.appendChild(divBas);
-
+  article.appendChild(bottomDiv);
   section.appendChild(article);
-  //? Fin Div Bas
-
-  return article;
 }
+
 
 
 Filtre();
