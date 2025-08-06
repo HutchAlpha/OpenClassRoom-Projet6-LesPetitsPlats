@@ -2,30 +2,72 @@ let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
 
-function Filtre() {
-  BoutonFiltre.addEventListener("click", function() {
+function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
+  const bouton = document.getElementById(buttonId);
+  const dropdown = document.getElementById(dropdownId);
+  const searchInput = document.getElementById(inputId);
+  const list = document.getElementById(listId);
+
+  bouton.addEventListener("click", () => {
     dropdown.classList.toggle("hidden");
   });
 
-  searchFiltre.addEventListener("input", function() {
-    let filter = searchFiltre.value.toLowerCase();
-    let items = dropdown.getElementsByTagName("li");
+  searchInput.addEventListener("input", () => {
+    const filter = searchInput.value.toLowerCase();
+    const items = list.getElementsByTagName("li");
     for (let i = 0; i < items.length; i++) {
-      let item = items[i];
-      if (item.textContent.toLowerCase().includes(filter)) {
-        item.style.display = "";
-      } else {
-        item.style.display = "none";
-      }
+      const item = items[i];
+      item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
     }
   });
 }
+
+// Appel des 3 filtres
+FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
+FiltreGenerique("BoutonFiltreAppareils", "dropdownAppareils", "searchFiltreAppareils", "appareilsList");
+FiltreGenerique("BoutonFiltreUstensiles", "dropdownUstensiles", "searchFiltreUstensiles", "ustensilesList");
 
 
 function Extraction() {
 recipes.forEach(recipe => {
   BlockRecette(recipe); 
+  Filtres(recipe);
 });
+
+}
+
+function Filtres(){
+  const ingredientList = document.getElementById("ingredientList");
+  const appareilsList = document.getElementById("appareilsList");
+  const ustensilesList = document.getElementById("ustensilesList");
+
+  const ingredients = new Set();
+  const appareils = new Set();
+  const ustensiles = new Set();
+
+  recipes.forEach(recipe => {
+    recipe.ingredients.forEach(ing => ingredients.add(ing.ingredient));
+    appareils.add(recipe.appliance);
+    recipe.ustensils.forEach(ust => ustensiles.add(ust));
+  });
+
+  ingredients.forEach(ing => {
+    const li = document.createElement("li");
+    li.textContent = ing;
+    ingredientList.appendChild(li);
+  });
+
+  appareils.forEach(app => {
+    const li = document.createElement("li");
+    li.textContent = app;
+    appareilsList.appendChild(li);
+  });
+
+  ustensiles.forEach(ust => {
+    const li = document.createElement("li");
+    li.textContent = ust;
+    ustensilesList.appendChild(li);
+  });
 
 }
 
@@ -104,8 +146,5 @@ function BlockRecette(recipe) {
   section.appendChild(article);
 }
 
-
-
-Filtre();
 
 Extraction();
