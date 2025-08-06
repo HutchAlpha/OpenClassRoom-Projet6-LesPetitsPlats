@@ -32,44 +32,63 @@ function Extraction() {
 recipes.forEach(recipe => {
   BlockRecette(recipe); 
   Filtres(recipe);
+  NombreRecettes(recipe);
 });
 
 }
 
-function Filtres(){
+function NombreRecettes() {
+  const nombre = recipes.length;
+  const element = document.getElementById("NombreRecettes");
+  element.textContent = `${nombre} recettes`;
+}
+
+
+function Filtres() {
   const ingredientList = document.getElementById("ingredientList");
   const appareilsList = document.getElementById("appareilsList");
   const ustensilesList = document.getElementById("ustensilesList");
 
+  // Vider les listes HTML
+  ingredientList.innerHTML = "";
+  appareilsList.innerHTML = "";
+  ustensilesList.innerHTML = "";
+
+  // Utiliser Set pour éviter les doublons
   const ingredients = new Set();
   const appareils = new Set();
   const ustensiles = new Set();
 
+  // Remplir les Set avec les données
   recipes.forEach(recipe => {
-    recipe.ingredients.forEach(ing => ingredients.add(ing.ingredient));
+    recipe.ingredients.forEach(i => ingredients.add(i.ingredient));
     appareils.add(recipe.appliance);
-    recipe.ustensils.forEach(ust => ustensiles.add(ust));
+    recipe.ustensils.forEach(u => ustensiles.add(u));
   });
 
-  ingredients.forEach(ing => {
+  // Créer et ajouter les éléments <li>
+  ingredients.forEach(i => {
     const li = document.createElement("li");
-    li.textContent = ing;
+    li.textContent = i;
+    li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
     ingredientList.appendChild(li);
   });
 
-  appareils.forEach(app => {
+  appareils.forEach(a => {
     const li = document.createElement("li");
-    li.textContent = app;
+    li.textContent = a;
+    li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
     appareilsList.appendChild(li);
   });
 
-  ustensiles.forEach(ust => {
+  ustensiles.forEach(u => {
     const li = document.createElement("li");
-    li.textContent = ust;
+    li.textContent = u;
+    li.className = "px-4 py-2 hover:bg-gray-100 cursor-pointer";
     ustensilesList.appendChild(li);
   });
-
 }
+
 
 function BlockRecette(recipe) {
   const section = document.getElementById("recetteSection");
