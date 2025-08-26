@@ -47,14 +47,13 @@ function BarreRecherche() {
   }
   // Recherche dynamique quand on tape
   searchInput.addEventListener("input", () => {
-    if (searchInput.value.length >= 3 || searchInput.value.length === 0) {
+    if (searchInput.value.length >= 1 || searchInput.value.length === 0) {
       filtrer();
     }
   });
   // Recherche quand on clique sur la loupe
   bouton.addEventListener("click", filtrer);
 }
-
 
 
 
