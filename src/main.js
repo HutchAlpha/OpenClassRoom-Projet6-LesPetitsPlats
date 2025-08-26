@@ -104,7 +104,7 @@ function BlockRecette(recipe) {
   const img = document.createElement("img");
   img.src = "JSON recipes/" + recipe.image;
   img.alt = recipe.name;
-  img.className = "w-full h-48 object-cover";
+  img.className = "w-full h-48 object-cover ";
 
   const badge = document.createElement("div");
   badge.textContent = recipe.time + "mn";
@@ -121,7 +121,7 @@ function BlockRecette(recipe) {
 
   // Titre de la recette
   const title = document.createElement("h2");
-  title.className = "text-lg font-semibold text-black";
+  title.className = "text-lg font-semibold text-black font-bold uppercase";
   title.textContent = recipe.name;
 
   // Bloc RECETTE
@@ -139,7 +139,7 @@ function BlockRecette(recipe) {
   ingLabel.textContent = "Ingrédients";
 
   const ingGrid = document.createElement("div");
-  ingGrid.className = "grid grid-cols-2 text-sm text-gray-800 gap-y-1";
+ingGrid.className = "grid grid-cols-2 gap-x-4 gap-y-2 text-sm";
 
   recipe.ingredients.forEach(ing => {
     const col1 = document.createElement("div");
