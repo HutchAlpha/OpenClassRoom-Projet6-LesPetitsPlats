@@ -1,3 +1,4 @@
+// Récupération des éléments du DOM
 let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
@@ -15,58 +16,117 @@ function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
   searchInput.addEventListener("input", () => {
     const filter = searchInput.value.toLowerCase();
     const items = list.getElementsByTagName("li");
+
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
-      item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
+      if (item.textContent.toLowerCase().includes(filter)) {
+        item.style.display = "";
+      } else {
+        item.style.display = "none";
+      }
     }
   });
 }
 
-// Appel des 3 filtres
-FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
-FiltreGenerique("BoutonFiltreAppareils", "dropdownAppareils", "searchFiltreAppareils", "appareilsList");
-FiltreGenerique("BoutonFiltreUstensiles", "dropdownUstensiles", "searchFiltreUstensiles", "ustensilesList");
+// === BARRE DE RECHERCHE PRINCIPALE ===
+function BarreRecherche() {
+  // ⚠️ Assure-toi d’avoir ajouté ces id dans index.html :
+  // <input id="RechercheInput" ... >
+  // <button id="RechercheBtn" ... >
+  const searchInput = document.getElementById("RechercheInput");
+  const bouton = document.getElementById("RechercheBtn");
 
+  function filtrer() {
+    const filter = searchInput.value.toLowerCase().trim();
+    const section = document.getElementById("recetteSection");
+    section.innerHTML = "";
 
-function Extraction() {
-recipes.forEach(recipe => {
-  BlockRecette(recipe); 
-  Filtres(recipe);
-  NombreRecettes(recipe);
-});
+    let resultats = [];
 
+    // === Boucles classiques ===
+    for (let i = 0; i < recipes.length; i++) {
+      const recipe = recipes[i];
+
+      let dansNom = recipe.name.toLowerCase().includes(filter);
+      let dansDescription = recipe.description.toLowerCase().includes(filter);
+
+      let dansIngredients = false;
+      for (let j = 0; j < recipe.ingredients.length; j++) {
+        if (recipe.ingredients[j].ingredient.toLowerCase().includes(filter)) {
+          dansIngredients = true;
+          break;
+        }
+      }
+
+      if (dansNom || dansDescription || dansIngredients) {
+        resultats.push(recipe);
+      }
+    }
+
+    // Affiche les résultats
+    for (let i = 0; i < resultats.length; i++) {
+      BlockRecette(resultats[i]);
+    }
+
+    // Met à jour le nombre
+    document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
+  }
+
+  // Recherche dynamique
+  searchInput.addEventListener("input", () => {
+    if (searchInput.value.length >= 1 || searchInput.value.length === 0) {
+      filtrer();
+    }
+  });
+
+  // Recherche quand on clique
+  bouton.addEventListener("click", filtrer);
 }
 
+// === EXTRACTION INITIALE ===
+function Extraction() {
+  for (let i = 0; i < recipes.length; i++) {
+    BlockRecette(recipes[i]);
+  }
+  Filtres();
+  NombreRecettes();
+}
+
+// === NOMBRE DE RECETTES ===
 function NombreRecettes() {
   const nombre = recipes.length;
   const element = document.getElementById("NombreRecettes");
   element.textContent = `${nombre} recettes`;
 }
 
-
+// === FILTRES ===
 function Filtres() {
   const ingredientList = document.getElementById("ingredientList");
   const appareilsList = document.getElementById("appareilsList");
   const ustensilesList = document.getElementById("ustensilesList");
 
-  // Vider les listes HTML
   ingredientList.innerHTML = "";
   appareilsList.innerHTML = "";
   ustensilesList.innerHTML = "";
 
-  // Utiliser Set pour éviter les doublons
   const ingredients = new Set();
   const appareils = new Set();
   const ustensiles = new Set();
 
-  // Remplir les Set avec les données
-  recipes.forEach(recipe => {
-    recipe.ingredients.forEach(i => ingredients.add(i.ingredient));
-    appareils.add(recipe.appliance);
-    recipe.ustensils.forEach(u => ustensiles.add(u));
-  });
+  for (let i = 0; i < recipes.length; i++) {
+    const recipe = recipes[i];
 
-  // Créer et ajouter les éléments <li>
+    for (let j = 0; j < recipe.ingredients.length; j++) {
+      ingredients.add(recipe.ingredients[j].ingredient);
+    }
+
+    appareils.add(recipe.appliance);
+
+    for (let k = 0; k < recipe.ustensils.length; k++) {
+      ustensiles.add(recipe.ustensils[k]);
+    }
+  }
+
   ingredients.forEach(i => {
     const li = document.createElement("li");
     li.textContent = i;
@@ -89,15 +149,14 @@ function Filtres() {
   });
 }
 
-
+// === BLOC RECETTE ===
 function BlockRecette(recipe) {
   const section = document.getElementById("recetteSection");
 
   const article = document.createElement("article");
-  article.className =
-    " sm:w-1/2 lg:[width:30%] bg-white rounded-2xl overflow-hidden shadow-md flex flex-col";
+  article.className = "sm:w-1/2 lg:[width:30%] bg-white rounded-2xl overflow-hidden shadow-md flex flex-col";
 
-  //? === Image en haut + Badge durée
+  // Image + Badge
   const topDiv = document.createElement("div");
   topDiv.className = "relative";
 
@@ -108,23 +167,20 @@ function BlockRecette(recipe) {
 
   const badge = document.createElement("div");
   badge.textContent = recipe.time + "mn";
-  badge.className =
-    "absolute top-2 right-2 bg-yellow-300 text-xs text-black font-medium px-2 py-0.5 rounded-full";
+  badge.className = "absolute top-2 right-2 bg-yellow-300 text-xs text-black font-medium px-2 py-0.5 rounded-full";
 
   topDiv.appendChild(img);
   topDiv.appendChild(badge);
   article.appendChild(topDiv);
 
-  //? === Texte et contenu bas
+  // Contenu bas
   const bottomDiv = document.createElement("div");
   bottomDiv.className = "p-5 flex flex-col gap-4";
 
-  // Titre de la recette
   const title = document.createElement("h2");
-  title.className = "text-lg font-semibold text-black";
+  title.className = "text-lg font-semibold text-black font-bold uppercase";
   title.textContent = recipe.name;
 
-  // Bloc RECETTE
   const recipeLabel = document.createElement("p");
   recipeLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
   recipeLabel.textContent = "Recette";
@@ -133,15 +189,16 @@ function BlockRecette(recipe) {
   description.className = "text-sm text-gray-800 leading-relaxed";
   description.textContent = recipe.description;
 
-  // Bloc INGRÉDIENTS
   const ingLabel = document.createElement("p");
   ingLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
   ingLabel.textContent = "Ingrédients";
 
   const ingGrid = document.createElement("div");
-  ingGrid.className = "grid grid-cols-2 text-sm text-gray-800 gap-y-1";
+  ingGrid.className = "grid grid-cols-2 gap-x-4 gap-y-2 text-sm";
 
-  recipe.ingredients.forEach(ing => {
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    const ing = recipe.ingredients[i];
+
     const col1 = document.createElement("div");
     col1.textContent = ing.ingredient;
 
@@ -153,7 +210,7 @@ function BlockRecette(recipe) {
 
     ingGrid.appendChild(col1);
     ingGrid.appendChild(col2);
-  });
+  }
 
   bottomDiv.appendChild(title);
   bottomDiv.appendChild(recipeLabel);
@@ -165,5 +222,9 @@ function BlockRecette(recipe) {
   section.appendChild(article);
 }
 
-
+// === INITIALISATION ===
+FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
+FiltreGenerique("BoutonFiltreAppareils", "dropdownAppareils", "searchFiltreAppareils", "appareilsList");
+FiltreGenerique("BoutonFiltreUstensiles", "dropdownUstensiles", "searchFiltreUstensiles", "ustensilesList");
+BarreRecherche();
 Extraction();
