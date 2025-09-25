@@ -41,14 +41,18 @@ function BarreRecherche() {
       return dansNom || dansDescription || dansIngredients;
     });
 
-    resultats.forEach(r => BlockRecette(r));
+    if (resultats.length === 0) {
+      section.innerHTML = `<p class="text-gray-600 italic">Aucune recette ne correspond à votre recherche.</p>`;
+    } else {
+      resultats.forEach(r => BlockRecette(r));
+    }
 
     // Maj le nombre
     document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
   }
-  // Recherche dynamique quand on tape
+  // Recherche dynamique quand on tape (seulement si >=3 caractères ou vide)
   searchInput.addEventListener("input", () => {
-    if (searchInput.value.length >= 1 || searchInput.value.length === 0) {
+    if (searchInput.value.length >= 3 || searchInput.value.length === 0) {
       filtrer();
     }
   });
@@ -193,9 +197,13 @@ function filtrerAvecTags() {
     }
   }
 
-  // Affiche les recettes trouvées
-  for (let i = 0; i < resultats.length; i++) {
-    BlockRecette(resultats[i]);
+  if (resultats.length === 0) {
+    section.innerHTML = `<p class="text-gray-600 italic">Aucune recette ne correspond aux filtres sélectionnés.</p>`;
+  } else {
+    // Affiche les recettes trouvées
+    for (let i = 0; i < resultats.length; i++) {
+      BlockRecette(resultats[i]);
+    }
   }
 
   // Met à jour le nombre
