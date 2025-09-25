@@ -1,3 +1,4 @@
+//! Récupération des éléments du DOM
 let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
@@ -23,7 +24,7 @@ function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
   });
 }
 
-
+//! === BARRE DE RECHERCHE PRINCIPALE ===
 function BarreRecherche() {
   const searchInput = document.getElementById("RechercheInput");
   const bouton = document.getElementById("RechercheBtn");
@@ -69,13 +70,14 @@ function Extraction() {
   });
 }
 
+//! === NOMBRE DE RECETTES ===
 function NombreRecettes() {
   const nombre = recipes.length;
   const element = document.getElementById("NombreRecettes");
   element.textContent = `${nombre} recettes`;
 }
 
-
+//! === FILTRES ===
 function Filtres() {
   const ingredientList = document.getElementById("ingredientList");
   const appareilsList = document.getElementById("appareilsList");
@@ -210,80 +212,98 @@ function filtrerAvecTags() {
   document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
 }
 
-
+//! === BLOC RECETTE ===
 function BlockRecette(recipe) {
   const section = document.getElementById("recetteSection");
 
   const article = document.createElement("article");
-  article.className = " sm:w-1/2 lg:[width:30%] bg-white rounded-2xl overflow-hidden shadow-md flex flex-col";
+  article.className = "w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)] bg-white rounded-xl overflow-hidden shadow-lg flex flex-col";
 
-  //? === Image en haut + Badge durée
+  // Image container with time badge
   const topDiv = document.createElement("div");
-  topDiv.className = "relative";
+  topDiv.className = "relative h-48";
 
   const img = document.createElement("img");
   img.src = "JSON recipes/" + recipe.image;
   img.alt = recipe.name;
-  img.className = "w-full h-48 object-cover ";
+  img.className = "w-full h-full object-cover";
 
   const badge = document.createElement("div");
-  badge.textContent = recipe.time + "mn";
-  badge.className = "absolute top-2 right-2 bg-yellow-300 text-xs text-black font-medium px-2 py-0.5 rounded-full";
+  badge.textContent = recipe.time + "min";
+  badge.className = "absolute top-4 right-4 bg-yellow-400 text-black font-medium px-3 py-1 rounded-full";
 
   topDiv.appendChild(img);
   topDiv.appendChild(badge);
   article.appendChild(topDiv);
 
-  //? === Texte et contenu bas
-  const bottomDiv = document.createElement("div");
-  bottomDiv.className = "p-5 flex flex-col gap-4";
+  // Content container
+  const contentDiv = document.createElement("div");
+  contentDiv.className = "p-6 flex flex-col gap-5";
 
-  //! Titre de la recette
+  // Recipe name
   const title = document.createElement("h2");
-  title.className = "text-lg font-semibold text-black font-bold uppercase";
+  title.className = "text-[18px] font-anton leading-[100%] tracking-[0%] font-normal text-gray-900 uppercase";
   title.textContent = recipe.name;
 
-  //!Bloc RECETTE
-  const recipeLabel = document.createElement("p");
-  recipeLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
-  recipeLabel.textContent = "Recette";
+  // RECETTE section
+  const recetteSection = document.createElement("div");
+  recetteSection.className = "space-y-2";
+  
+  const recetteLabel = document.createElement("h3");
+  recetteLabel.className = "text-sm font-semibold text-gray-500 uppercase";
+  recetteLabel.textContent = "RECETTE";
 
   const description = document.createElement("p");
-  description.className = "text-sm text-gray-800 leading-relaxed";
+  description.className = "text-sm text-gray-600 line-clamp-4";
   description.textContent = recipe.description;
 
-  //!Bloc INGRÉDIENTS
-  const ingLabel = document.createElement("p");
-  ingLabel.className = "text-xs uppercase font-semibold text-gray-400 tracking-wide";
-  ingLabel.textContent = "Ingrédients";
+  recetteSection.appendChild(recetteLabel);
+  recetteSection.appendChild(description);
 
-  const ingGrid = document.createElement("div");
-  ingGrid.className = "grid grid-cols-2 gap-x-4 gap-y-2 text-sm";
+  // INGRÉDIENTS section
+  const ingredientsSection = document.createElement("div");
+  ingredientsSection.className = "space-y-2";
+
+  const ingredientsLabel = document.createElement("h3");
+  ingredientsLabel.className = "text-sm font-semibold text-gray-500 uppercase";
+  ingredientsLabel.textContent = "INGRÉDIENTS";
+
+  const ingredientsGrid = document.createElement("div");
+  ingredientsGrid.className = "grid grid-cols-2 gap-4";
 
   recipe.ingredients.forEach(ing => {
-    const col1 = document.createElement("div");
-    col1.textContent = ing.ingredient;
+    const ingredientItem = document.createElement("div");
+    ingredientItem.className = "space-y-1";
 
-    const col2 = document.createElement("div");
+    const ingName = document.createElement("div");
+    ingName.className = "text-sm font-medium text-gray-900";
+    ingName.textContent = ing.ingredient;
+
+    const ingQuantity = document.createElement("div");
+    ingQuantity.className = "text-sm text-gray-500";
     let quantity = "";
     if (ing.quantity !== undefined) quantity += ing.quantity;
     if (ing.unit) quantity += " " + ing.unit;
-    col2.textContent = quantity;
+    ingQuantity.textContent = quantity;
 
-    ingGrid.appendChild(col1);
-    ingGrid.appendChild(col2);
+    ingredientItem.appendChild(ingName);
+    ingredientItem.appendChild(ingQuantity);
+    ingredientsGrid.appendChild(ingredientItem);
   });
 
-  bottomDiv.appendChild(title);
-  bottomDiv.appendChild(recipeLabel);
-  bottomDiv.appendChild(description);
-  bottomDiv.appendChild(ingLabel);
-  bottomDiv.appendChild(ingGrid);
+  ingredientsSection.appendChild(ingredientsLabel);
+  ingredientsSection.appendChild(ingredientsGrid);
 
-  article.appendChild(bottomDiv);
+  // Append all sections to content div
+  contentDiv.appendChild(title);
+  contentDiv.appendChild(recetteSection);
+  contentDiv.appendChild(ingredientsSection);
+
+  article.appendChild(contentDiv);
   section.appendChild(article);
 }
 
+//! === INITIALISATION ===
 FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
 FiltreGenerique("BoutonFiltreAppareils", "dropdownAppareils", "searchFiltreAppareils", "appareilsList");
 FiltreGenerique("BoutonFiltreUstensiles", "dropdownUstensiles", "searchFiltreUstensiles", "ustensilesList");
