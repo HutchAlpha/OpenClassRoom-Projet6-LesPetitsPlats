@@ -1,4 +1,4 @@
-//! Récupération des éléments du DOM
+//!DOM
 let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
@@ -53,7 +53,7 @@ function BarreRecherche() {
     // Maj le nombre
     document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
   }
-  // Recherche dynamique quand on tape (seulement si >=3 caractères ou vide)
+
   searchInput.addEventListener("input", () => {
     if (searchInput.value.length >= 3 || searchInput.value.length === 0) {
       filtrer();
@@ -135,7 +135,6 @@ function Filtres() {
 function addFilterTag(text) {
   const filterContainer = document.getElementById("FilterContainer");
 
-  // Vérifie si déjà présent avec Array.from et some
   const dejaPresent = Array.from(filterContainer.querySelectorAll("span"))
     .some(span => span.textContent === text);
   if (dejaPresent) return;
@@ -157,9 +156,8 @@ function addFilterTag(text) {
   // Supprime le tag quand on clique sur ×
   btn.addEventListener("click", () => {
     tag.remove();
-    // Retire aussi du tableau des filtres avec filter
     activeFilters = activeFilters.filter(f => f !== text.toLowerCase());
-    filtrerAvecTags(); // relance le filtrage
+    filtrerAvecTags(); 
   });
 
   tag.appendChild(span);
@@ -175,9 +173,8 @@ function filtrerAvecTags() {
   const section = document.getElementById("recetteSection");
   section.innerHTML = "";
 
-  // Filtre les recettes avec méthodes Array
+  //? Filtre les recettes avec méthodes Array
   const resultats = recipes.filter(recipe => {
-    // Vérifie si la recette contient TOUS les filtres actifs avec every
     return activeFilters.every(filtre => {
       const criteres = [
         recipe.name.toLowerCase().includes(filtre),
