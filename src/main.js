@@ -1,9 +1,10 @@
-//! Récupération des éléments du DOM
+//!DOM
 let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
 let activeFilters = [];
 
+//! === FILTRE GÉNÉRIQUE
 function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
   const bouton = document.getElementById(buttonId);
   const dropdown = document.getElementById(dropdownId);
@@ -16,15 +17,14 @@ function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
 
   searchInput.addEventListener("input", () => {
     const filter = searchInput.value.toLowerCase();
-    const items = list.getElementsByTagName("li");
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    const items = Array.from(list.getElementsByTagName("li"));
+    items.forEach(item => {
       item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
-    }
+    });
   });
 }
 
-//! === BARRE DE RECHERCHE PRINCIPALE ===
+//! === BARRE DE RECHERCHE PRINCIPALE
 function BarreRecherche() {
   const searchInput = document.getElementById("RechercheInput");
   const bouton = document.getElementById("RechercheBtn");
@@ -34,24 +34,26 @@ function BarreRecherche() {
     const section = document.getElementById("recetteSection");
     section.innerHTML = "";
 
-    // Filtre les recettes
+    // Filtre les recettes avec méthodes Array
     const resultats = recipes.filter(recipe => {
-      const dansNom = recipe.name.toLowerCase().includes(filter);
-      const dansDescription = recipe.description.toLowerCase().includes(filter);
-      const dansIngredients = recipe.ingredients.some(i => i.ingredient.toLowerCase().includes(filter));
-      return dansNom || dansDescription || dansIngredients;
+      const criteres = [
+        recipe.name.toLowerCase().includes(filter),
+        recipe.description.toLowerCase().includes(filter),
+        recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filter))
+      ];
+      return criteres.some(critere => critere);
     });
 
     if (resultats.length === 0) {
       section.innerHTML = `<p class="text-gray-600 italic">Aucune recette ne correspond à votre recherche.</p>`;
     } else {
-      resultats.forEach(r => BlockRecette(r));
+      resultats.forEach(recette => BlockRecette(recette));
     }
 
     // Maj le nombre
     document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
   }
-  // Recherche dynamique quand on tape (seulement si >=3 caractères ou vide)
+
   searchInput.addEventListener("input", () => {
     if (searchInput.value.length >= 3 || searchInput.value.length === 0) {
       filtrer();
@@ -123,18 +125,17 @@ function Filtres() {
     listElement.appendChild(li);
   }
 
-  // Remplit les 3 listes
-  ingredients.forEach(i => createFilterItem(i, ingredientList));
-  appareils.forEach(a => createFilterItem(a, appareilsList));
-  ustensiles.forEach(u => createFilterItem(u, ustensilesList));
+  // Remplit les 3 listes avec forEach
+  Array.from(ingredients).forEach(ingredient => createFilterItem(ingredient, ingredientList));
+  Array.from(appareils).forEach(appareil => createFilterItem(appareil, appareilsList));
+  Array.from(ustensiles).forEach(ustensile => createFilterItem(ustensile, ustensilesList));
 }
 
 // === Gestion des tags dans FilterContainer ===
 function addFilterTag(text) {
   const filterContainer = document.getElementById("FilterContainer");
 
-  // Vérifie si déjà présent
-  const dejaPresent = [...filterContainer.querySelectorAll("span")]
+  const dejaPresent = Array.from(filterContainer.querySelectorAll("span"))
     .some(span => span.textContent === text);
   if (dejaPresent) return;
 
@@ -155,9 +156,8 @@ function addFilterTag(text) {
   // Supprime le tag quand on clique sur ×
   btn.addEventListener("click", () => {
     tag.remove();
-    // Retire aussi du tableau des filtres
     activeFilters = activeFilters.filter(f => f !== text.toLowerCase());
-    filtrerAvecTags(); // relance le filtrage
+    filtrerAvecTags(); 
   });
 
   tag.appendChild(span);
@@ -168,44 +168,30 @@ function addFilterTag(text) {
   filtrerAvecTags();
 }
 
+//! === FILTRAGE AVEC TAGS
 function filtrerAvecTags() {
   const section = document.getElementById("recetteSection");
   section.innerHTML = "";
 
-  let resultats = [];
-
-  for (let i = 0; i < recipes.length; i++) {
-    const recipe = recipes[i];
-
-    // Vérifie si la recette contient TOUS les filtres actifs
-    let correspond = true;
-
-    for (let j = 0; j < activeFilters.length; j++) {
-      const filtre = activeFilters[j];
-      const dansNom = recipe.name.toLowerCase().includes(filtre);
-      const dansDescription = recipe.description.toLowerCase().includes(filtre);
-      const dansIngredients = recipe.ingredients.some(i => i.ingredient.toLowerCase().includes(filtre));
-      const dansAppareil = recipe.appliance.toLowerCase().includes(filtre);
-      const dansUstensiles = recipe.ustensils.some(u => u.toLowerCase().includes(filtre));
-
-      if (!(dansNom || dansDescription || dansIngredients || dansAppareil || dansUstensiles)) {
-        correspond = false;
-        break;
-      }
-    }
-
-    if (correspond) {
-      resultats.push(recipe);
-    }
-  }
+  //? Filtre les recettes avec méthodes Array
+  const resultats = recipes.filter(recipe => {
+    return activeFilters.every(filtre => {
+      const criteres = [
+        recipe.name.toLowerCase().includes(filtre),
+        recipe.description.toLowerCase().includes(filtre),
+        recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filtre)),
+        recipe.appliance.toLowerCase().includes(filtre),
+        recipe.ustensils.some(ustensile => ustensile.toLowerCase().includes(filtre))
+      ];
+      return criteres.some(critere => critere);
+    });
+  });
 
   if (resultats.length === 0) {
     section.innerHTML = `<p class="text-gray-600 italic">Aucune recette ne correspond aux filtres sélectionnés.</p>`;
   } else {
-    // Affiche les recettes trouvées
-    for (let i = 0; i < resultats.length; i++) {
-      BlockRecette(resultats[i]);
-    }
+    // Affiche les recettes trouvées avec forEach
+    resultats.forEach(recette => BlockRecette(recette));
   }
 
   // Met à jour le nombre
@@ -271,6 +257,7 @@ function BlockRecette(recipe) {
   const ingredientsGrid = document.createElement("div");
   ingredientsGrid.className = "grid grid-cols-2 gap-4";
 
+  // Utilise forEach pour les ingrédients
   recipe.ingredients.forEach(ing => {
     const ingredientItem = document.createElement("div");
     ingredientItem.className = "space-y-1";
