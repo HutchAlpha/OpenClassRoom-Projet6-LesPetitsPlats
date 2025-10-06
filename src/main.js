@@ -290,6 +290,7 @@ function BlockRecette(recipe) {
   section.appendChild(article);
 }
 
+
 //! === INITIALISATION ===
 FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
 FiltreGenerique("BoutonFiltreAppareils", "dropdownAppareils", "searchFiltreAppareils", "appareilsList");
