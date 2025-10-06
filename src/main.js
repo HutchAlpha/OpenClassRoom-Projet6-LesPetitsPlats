@@ -1,4 +1,4 @@
-//! Récupération des éléments du DOM
+//! DOM
 let BoutonFiltre = document.getElementById("BoutonFiltre");
 let dropdown = document.getElementById("dropdown");
 let searchFiltre = document.getElementById("searchFiltre");
@@ -18,7 +18,7 @@ function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
   searchInput.addEventListener("input", () => {
     const filter = searchInput.value.toLowerCase();
     const items = list.getElementsByTagName("li");
-    // Boucle for native au lieu de Array.from() et forEach()
+    // Boucle native
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
@@ -36,7 +36,6 @@ function BarreRecherche() {
     const section = document.getElementById("recetteSection");
     section.innerHTML = "";
 
-    // Filtre les recettes avec boucles natives
     const resultats = [];
     
     for (let i = 0; i < recipes.length; i++) {
@@ -213,14 +212,13 @@ function addFilterTag(text) {
         i++;
       }
     }
-    filtrerAvecTags(); // relance le filtrage
+    filtrerAvecTags(); 
   });
 
   tag.appendChild(span);
   tag.appendChild(btn);
   filterContainer.appendChild(tag);
 
-  // Filtre les recettes après ajout
   filtrerAvecTags();
 }
 
@@ -229,7 +227,6 @@ function filtrerAvecTags() {
   const section = document.getElementById("recetteSection");
   section.innerHTML = "";
 
-  // Filtre les recettes avec boucles natives
   const resultats = [];
   
   for (let i = 0; i < recipes.length; i++) {
