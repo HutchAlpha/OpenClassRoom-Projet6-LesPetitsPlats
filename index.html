@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body class="m-0 p-0 box-border">
   <header
@@ -25,108 +26,117 @@
 
       <!-- Barre de recherche -->
       <div class="flex w-full max-w-xl mx-auto rounded-full overflow-hidden shadow-md bg-white">
-        <input id="RechercheInput" type="text" placeholder="Rechercher une recette, un ingrédient, ..." class="flex-grow px-6 py-3 text-gray-800 outline-none" />
+        <input
+          type="text"
+          id="RechercheInput"
+          placeholder="Rechercher une recette, un ingrédient, ..."
+          class="flex-grow px-6 py-3 text-gray-800 outline-none"
+        />
         <button id="RechercheBtn" class="px-5 flex items-center justify-center">
           <img src="img/recherche.svg" alt="Rechercher" class="w-10 h-10" />
-      </button>
-
+        </button>
       </div>
     </div>
   </header>
-</body>
-</html>
 
 
+  <section class="bg-gray-200 py-6 px-8">
+    <div class="max-w-6xl mx-auto flex items-center gap-12">
 
-<section class="bg-gray-200 h-screen">
-<!-- FILTRE INGRÉDIENTS -->
-<div class="relative inline-block w-64">
-  <button
-    class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
-    id="BoutonFiltreIngredients"
-  >
-    <span>Ingrédients</span>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M19 9l-7 7-7-7" />
-    </svg>
-  </button>
+      <!--FILTRE INGRÉDIENTS-->
+    <div class="relative inline-block w-36 sm:w-40 md:w-44">
+      <button
+        class="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
+        id="BoutonFiltreIngredients"
+      >
+        <span class="text-sm">Ingrédients</span>
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
 
-  <div id="dropdownIngredients" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-    <div class="flex items-center px-3 py-2 border-b">
-      <input
-        type="text"
-        placeholder="Rechercher..."
-        class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
-        id="searchFiltreIngredients"
-      />
-      <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
-      </svg>
+      <div id="dropdownIngredients" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div class="flex items-center px-2 py-2 border-b">
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
+            id="searchFiltreIngredients"
+          />
+          <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
+          </svg>
+        </div>
+        <ul id="ingredientList" class="max-h-60 overflow-y-auto text-sm p-1 space-y-1"></ul>
+      </div>
     </div>
-    <ul id="ingredientList" class="max-h-60 overflow-y-auto text-sm"></ul>
-  </div>
-</div>
 
-<!-- FILTRE APPAREILS -->
-<div class="relative inline-block w-64">
-  <button
-    class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
-    id="BoutonFiltreAppareils"
-  >
-    <span>Appareils</span>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M19 9l-7 7-7-7" />
-    </svg>
-  </button>
 
-  <div id="dropdownAppareils" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-    <div class="flex items-center px-3 py-2 border-b">
-      <input
-        type="text"
-        placeholder="Rechercher..."
-        class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
-        id="searchFiltreAppareils"
-      />
-      <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
-      </svg>
+      <!-- FILTRE APPAREILS (exactement ton HTML) -->
+        <div class="relative inline-block w-36 sm:w-40 md:w-44">
+      <button
+        class="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
+        id="BoutonFiltreAppareils"
+      >
+        <span class="text-sm">Appareils</span>
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <div id="dropdownAppareils" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div class="flex items-center px-2 py-2 border-b">
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
+            id="searchFiltreAppareils"
+          />
+          <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
+          </svg>
+        </div>
+        <ul id="appareilsList" class="max-h-60 overflow-y-auto text-sm p-1 space-y-1"></ul>
+      </div>
     </div>
-    <ul id="appareilsList" class="max-h-60 overflow-y-auto text-sm"></ul>
-  </div>
-</div>
 
-<!-- FILTRE USTENSILES -->
-<div class="relative inline-block w-64">
-  <button
-    class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
-    id="BoutonFiltreUstensiles"
-  >
-    <span>Ustensiles</span>
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M19 9l-7 7-7-7" />
-    </svg>
-  </button>
+      <!-- FILTRE USTENSILES (exactement ton HTML) -->
+ <div class="relative inline-block w-36 sm:w-40 md:w-44">
+      <button
+        class="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm flex justify-between items-center"
+        id="BoutonFiltreUstensiles"
+      >
+        <span class="text-sm">Ustensiles</span>
+        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
 
-  <div id="dropdownUstensiles" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
-    <div class="flex items-center px-3 py-2 border-b">
-      <input
-        type="text"
-        placeholder="Rechercher..."
-        class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
-        id="searchFiltreUstensiles"
-      />
-      <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
-      </svg>
+      <div id="dropdownUstensiles" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg">
+        <div class="flex items-center px-2 py-2 border-b">
+          <input
+            type="text"
+            placeholder="Rechercher..."
+            class="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring"
+            id="searchFiltreUstensiles"
+          />
+          <svg class="w-4 h-4 ml-2 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 21l-6-6m2-5a7 7 0 1 0-14 0 7 7 0 0 0 14 0z" />
+          </svg>
+        </div>
+        <ul id="ustensilesList" class="max-h-60 overflow-y-auto text-sm p-1 space-y-1"></ul>
+      </div>
     </div>
-    <ul id="ustensilesList" class="max-h-60 overflow-y-auto text-sm"></ul>
-  </div>
-</div>
+      <div class="flex-1"></div>
 
-<h1 id="NombreRecettes"></h1>
-</section>
+      <!-- Nombre de recettes (à droite) -->
+      <div id="NombreRecettes" class="text-gray-900 font-bold uppercase"></div>
+    </div>
 
-<section id="recetteSection" class="flex flex-row flex-wrap justify-center gap-4 bg-red-100 p-4"></section>
+    <div id="FilterContainer"></div>
+  </section>
+
+<section id="recetteSection" class="flex flex-row flex-wrap justify-center gap-4 bg-gray-200 p-4"></section>
 
 
 </html>
