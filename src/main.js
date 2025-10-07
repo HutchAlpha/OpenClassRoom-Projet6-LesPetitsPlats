@@ -18,7 +18,6 @@ function FiltreGenerique(buttonId, dropdownId, inputId, listId) {
   searchInput.addEventListener("input", () => {
     const filter = searchInput.value.toLowerCase();
     const items = list.getElementsByTagName("li");
-    // Boucle native
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
@@ -170,7 +169,7 @@ function Filtres() {
   }
 }
 
-// === Gestion des tags dans FilterContainer ===
+// === Gestion tags dans FilterContainer ===
 function addFilterTag(text) {
   const filterContainer = document.getElementById("FilterContainer");
 
@@ -202,7 +201,6 @@ function addFilterTag(text) {
   // Supprime le tag quand on clique sur ×
   btn.addEventListener("click", () => {
     tag.remove();
-    // Retire aussi du tableau des filtres avec boucle while
     const filtreASupprimer = text.toLowerCase();
     let i = 0;
     while (i < activeFilters.length) {
@@ -305,7 +303,7 @@ function BlockRecette(recipe) {
   const article = document.createElement("article");
   article.className = "w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)] bg-white rounded-xl overflow-hidden shadow-lg flex flex-col";
 
-  // Image container with time badge
+  //?Img
   const topDiv = document.createElement("div");
   topDiv.className = "relative h-48";
 
@@ -322,16 +320,15 @@ function BlockRecette(recipe) {
   topDiv.appendChild(badge);
   article.appendChild(topDiv);
 
-  // Content container
   const contentDiv = document.createElement("div");
   contentDiv.className = "p-6 flex flex-col gap-5";
 
-  // Recipe name
+  //?Nom Recettes
   const title = document.createElement("h2");
   title.className = "text-[18px] font-anton leading-[100%] tracking-[0%] font-normal text-gray-900 uppercase";
   title.textContent = recipe.name;
 
-  // RECETTE section
+  //? Section Recettes
   const recetteSection = document.createElement("div");
   recetteSection.className = "space-y-2";
   
@@ -346,7 +343,7 @@ function BlockRecette(recipe) {
   recetteSection.appendChild(recetteLabel);
   recetteSection.appendChild(description);
 
-  // INGRÉDIENTS section
+  //? Section Ingrédients
   const ingredientsSection = document.createElement("div");
   ingredientsSection.className = "space-y-2";
 
@@ -382,7 +379,6 @@ function BlockRecette(recipe) {
   ingredientsSection.appendChild(ingredientsLabel);
   ingredientsSection.appendChild(ingredientsGrid);
 
-  // Append all sections to content div
   contentDiv.appendChild(title);
   contentDiv.appendChild(recetteSection);
   contentDiv.appendChild(ingredientsSection);
