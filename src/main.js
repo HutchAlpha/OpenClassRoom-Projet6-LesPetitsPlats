@@ -190,11 +190,10 @@ function filtrerAvecTags() {
   if (resultats.length === 0) {
     section.innerHTML = `<p class="text-gray-600 italic">Aucune recette ne correspond aux filtres sélectionnés.</p>`;
   } else {
-    // Affiche les recettes trouvées avec forEach
+    // Affiche recettes trouvées avec forEach
     resultats.forEach(recette => BlockRecette(recette));
   }
 
-  // Met à jour le nombre
   document.getElementById("NombreRecettes").textContent = `${resultats.length} recettes`;
 }
 
@@ -205,7 +204,7 @@ function BlockRecette(recipe) {
   const article = document.createElement("article");
   article.className = "w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1rem)] bg-white rounded-xl overflow-hidden shadow-lg flex flex-col";
 
-  // Image container with time badge
+  //?IMG
   const topDiv = document.createElement("div");
   topDiv.className = "relative h-48";
 
@@ -222,16 +221,16 @@ function BlockRecette(recipe) {
   topDiv.appendChild(badge);
   article.appendChild(topDiv);
 
-  // Content container
+  
   const contentDiv = document.createElement("div");
   contentDiv.className = "p-6 flex flex-col gap-5";
 
-  // Recipe name
+  //?Nom recettes
   const title = document.createElement("h2");
   title.className = "text-[18px] font-anton leading-[100%] tracking-[0%] font-normal text-gray-900 uppercase";
   title.textContent = recipe.name;
 
-  // RECETTE section
+  //?section recette
   const recetteSection = document.createElement("div");
   recetteSection.className = "space-y-2";
   
@@ -246,7 +245,7 @@ function BlockRecette(recipe) {
   recetteSection.appendChild(recetteLabel);
   recetteSection.appendChild(description);
 
-  // INGRÉDIENTS section
+  //?section ingrédients
   const ingredientsSection = document.createElement("div");
   ingredientsSection.className = "space-y-2";
 
@@ -257,7 +256,7 @@ function BlockRecette(recipe) {
   const ingredientsGrid = document.createElement("div");
   ingredientsGrid.className = "grid grid-cols-2 gap-4";
 
-  // Utilise forEach pour les ingrédients
+  //?forEach pour les ingrédients
   recipe.ingredients.forEach(ing => {
     const ingredientItem = document.createElement("div");
     ingredientItem.className = "space-y-1";
@@ -281,7 +280,6 @@ function BlockRecette(recipe) {
   ingredientsSection.appendChild(ingredientsLabel);
   ingredientsSection.appendChild(ingredientsGrid);
 
-  // Append all sections to content div
   contentDiv.appendChild(title);
   contentDiv.appendChild(recetteSection);
   contentDiv.appendChild(ingredientsSection);
@@ -289,6 +287,7 @@ function BlockRecette(recipe) {
   article.appendChild(contentDiv);
   section.appendChild(article);
 }
+
 
 //! === INITIALISATION ===
 FiltreGenerique("BoutonFiltreIngredients", "dropdownIngredients", "searchFiltreIngredients", "ingredientList");
